@@ -34,7 +34,16 @@ students = [{
 
 def add_students():
     for student in students:
-        Student.create(username=student['username'], points=student['points'])
+        try:
+            Student.create(
+                username=student['username'], points=student['points'])
+        except IntegrityError:
+            student_record = Student.get(username=student['username'])
+            if student_record.points != student['points']:
+                student_record.points = student['points']
+                student_record.save()
+            else:
+                continue
 
 
 if __name__ == "__main__":
