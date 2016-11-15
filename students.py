@@ -46,7 +46,13 @@ def add_students():
                 continue
 
 
+def top_student():
+    student = Student.select().order_by(Student.points.desc()).get()
+    return student
+
+
 if __name__ == "__main__":
     db.connect()
     db.create_tables([Student], safe=True)
     add_students()
+    print("Our top student right now is: {0.username}".format(top_student()))
